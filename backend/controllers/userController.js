@@ -71,22 +71,20 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     (user.email = req.body.email || user.email),
       (user.name = req.body.name || user.name);
 
-
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
-
      if(req.file){
-
-            user.profileImage = req.file.filename || user.profileImage;
-
+            user.userImage = req.file.filename || user.userImage;
         }
+
+        if (req.body.password) {
+          user.password = req.body.password;
+        }
+
     const updatedUser = await user.save();
     res.status(200).json({
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      profileImage: updatedUser.profileImage,
+      image: updatedUser.userImage,
     });
   } else {
     res.status(404);

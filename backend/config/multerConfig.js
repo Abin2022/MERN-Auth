@@ -3,9 +3,8 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "backend/public/UserImage");
+    cb(null, "backend/public/images");
   },
-
   filename: (req, file, cb) => {
     cb(
       null,
@@ -14,15 +13,6 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image/")) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only images are allowed!"), false);
-  }
-};
-
-export const multerUploadUserProfile = multer({
+export const mullterUserImage = multer({
   storage: storage,
-  fileFilter: fileFilter,
 });
