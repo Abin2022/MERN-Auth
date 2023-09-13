@@ -34,7 +34,7 @@ const UsersList = () => {
 
   return (
     <div>
-      <h1>USER DATA</h1>
+      <h1>USER LIST</h1>
       {loading ? <Loader/> : null}
       <TableComponent users={user} />
     </div>

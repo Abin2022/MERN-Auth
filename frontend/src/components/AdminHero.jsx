@@ -12,12 +12,13 @@ const AdminHero = () => {
             and Redux Toolkit on Admin side 
           </p>
           <div className="d-flex">
-            <LinkContainer to="/adminlogin">
+            
+            {/* <LinkContainer to="/adminlogin">
               <Button variant="dark" className="me-3">
                 Sign In
               </Button>
             </LinkContainer>
-           
+            */}
           </div>
         </Card>
       </Container>

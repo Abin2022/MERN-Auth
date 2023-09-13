@@ -27,6 +27,7 @@ const updateUser = async (userData) => {
     // Update user.name and user.email with the new values
     user.name = userData.name;
     user.email = userData.email;
+    user.profileImage = userData.profileImage;
 
     // Save the updated user data
     await user.save();

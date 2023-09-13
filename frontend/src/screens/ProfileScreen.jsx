@@ -14,6 +14,7 @@ const ProfileScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confrimPassword, setConfrimPassword] = useState("");
+  const [image, setImage] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,7 +24,8 @@ const ProfileScreen = () => {
   useEffect(() => {
     setName(userInfo.name);
     setEmail(userInfo.email);
-  }, [userInfo.setName, userInfo.setEmail]);
+    setImage(userInfo.image);
+  }, [userInfo.setName, userInfo.setEmail,userInfo.setImage]);
 
   const sumbmitHandler = async (e) => {
     e.preventDefault();
@@ -36,6 +38,7 @@ const ProfileScreen = () => {
           name,
           email,
           password,
+          image,
         }).unwrap();
         dispatch(setCredentials({ ...res }));
         toast.success("Profile updated");
@@ -49,7 +52,7 @@ const ProfileScreen = () => {
       <h1>Profile</h1>
       <Form onSubmit={sumbmitHandler}>
         <Form.Group className="my-2" controlId="name">
-          <Form.Label>name</Form.Label>
+          <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter name"
@@ -84,6 +87,17 @@ const ProfileScreen = () => {
             onChange={(e) => setConfrimPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
+
+        {/* <Form.Group className="my-2" controlId="image">
+          <Form.Label>Profile Picture</Form.Label>
+          <Form.Control
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+          ></Form.Control>
+        </Form.Group> */}
+
+
+
         {isLoading && <Loader />}
         <Button type="submit" variant="dark" className="mt-3">
           Update
