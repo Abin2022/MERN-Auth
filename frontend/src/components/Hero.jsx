@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Card, Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+// import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector } from 'react-redux';
 
 const Hero = () => {
@@ -25,23 +25,25 @@ const Hero = () => {
               />
             )}
         </>):("")}
-        <h1 className='text-center mb-4'>{userInfo ? `Welcome ${userInfo.name}` : 'MERN Authentication' }</h1>
+        {/* <h1 className='text-center mb-4'>{userInfo ? `Welcome ${userInfo.name}` : '' }</h1> */}
         <p className='text-center mb-4'>
-        {userInfo ? `Email : ${userInfo.email}` : "This is a boilerplate for MERN authentication that stores a JWT inan HTTP-Only cookie. It also uses Redux Toolkit and the ReactBootstrap library" } 
+        {/* {userInfo ? `Email : ${userInfo.email}` : "Here is the home page Image" }  */}
+        {userInfo ? "Here is the home page Image" : "Here is the home page Image" } 
+
         </p>
         <div className='d-flex'>
         {userInfo ? (
              ""
             ) : (
                 <>
-                <LinkContainer to="/login">
+                {/* <LinkContainer to="/login">
                   <Button variant="primary" className="me-3">
                     Sign In
                   </Button>
                 </LinkContainer>
                 <LinkContainer to="/register">
                   <Button variant="secondary">Sign Up</Button>
-                </LinkContainer>
+                </LinkContainer> */}
               </>
             )}
           

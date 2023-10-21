@@ -142,12 +142,46 @@ const deleteUserData = asyncHandler( async (req, res) => {
 
 });
 
+
+const blockUser = asyncHandler(async (req, res) => {
+  const userId = req.body.userId;
+  const blockTrue = {
+    isBlocked: true,
+  };
+
+  const blockUser = await User.findByIdAndUpdate(userId, blockTrue);
+  if (blockUser) {
+    res.status(200).json({ message: "user blocked sucessfully" });
+  } else {
+    res.status(404).json({ message: "user not found" });
+  }
+});
+
+const unblockUser = asyncHandler(async (req, res) => {
+  const userId = req.body.userId;
+  const unblockFalse = {
+    isBlocked: false,
+  };
+  const blockUser = await User.findByIdAndUpdate(userId, unblockFalse);
+
+  if (blockUser) {
+    res.status(200).json({ message: "user unblocked sucessfully" });
+  } else {
+    res.status(404).json({ message: "user not found" });
+  }
+});
+
+
+
 export  {authAdmin ,
     registerAdmin,
     logoutAdmin,
     getAllUsers,
     updateUserData,
-    deleteUserData
+    deleteUserData,
+    blockUser,
+    unblockUser
+
 }
 
 

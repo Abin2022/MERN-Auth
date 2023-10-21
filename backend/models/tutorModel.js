@@ -1,12 +1,13 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const userSchema = mongoose.Schema(
+const tutorSchema = mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
     },
+
     email: {
       type: String,
       required: true,
@@ -16,19 +17,34 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    userImage: {
+    qualification: {
+      type: [String],
+      required: true,
+    },
+    experience: {
+      type: String,
+      required: true,
+    },
+    rating: {
+      type: Number,
+    },
+    about: {
       type: String,
     },
     isBlocked: {
       type: Boolean,
       default: false,
     },
+    tutorImage: {
+      type: String,
+    },
   },
   {
     timestamps: true,
   }
 );
-userSchema.pre("save", async function (next) {
+
+tutorSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
@@ -36,8 +52,8 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-userSchema.methods.matchPassword = async function (enteredPassword) {
+tutorSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-const User = mongoose.model("User", userSchema);
-export default User;
+const Tutor = mongoose.model("Tutor", tutorSchema);
+export default Tutor;

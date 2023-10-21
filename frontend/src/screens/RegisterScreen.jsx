@@ -47,7 +47,7 @@ const RegisterScreen = () => {
       <h1>Sign Up</h1>
       <Form onSubmit={sumbmitHandler}>
         <Form.Group className="my-2" controlId="name">
-          <Form.Label>name</Form.Label>
+          <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter name"
@@ -65,7 +65,7 @@ const RegisterScreen = () => {
           ></Form.Control>
         </Form.Group>
         <Form.Group className="my-2" controlId="password">
-          <Form.Label>password </Form.Label>
+          <Form.Label>Password </Form.Label>
           <Form.Control
             type="password"
             placeholder="Enter password"
@@ -74,7 +74,7 @@ const RegisterScreen = () => {
           ></Form.Control>
         </Form.Group>
         <Form.Group className="my-2" controlId="confrimPassword">
-          <Form.Label>confrim password </Form.Label>
+          <Form.Label>Confirm password </Form.Label>
           <Form.Control
             type="text"
             placeholder="confrim password"
@@ -88,7 +88,7 @@ const RegisterScreen = () => {
         </Button>
         <Row className="py-3">
           <Col>
-            already have an account? <Link to="/login">Sign In</Link>
+            Already have an account? <Link to="/login">Sign In</Link>
           </Col>
         </Row>
       </Form>

@@ -1,13 +1,16 @@
-import React,{useState}  from 'react';
+import React,{useState,useEffect}  from 'react';
 import Table from "react-bootstrap/Table";
 import Form from 'react-bootstrap/Form';
 import { Button, Modal,  Form as BootstrapForm } from "react-bootstrap";
-import { useDeleteUserMutation,useUpdateUserByAdminMutation } from "../slices/adminAdminApiSlice"
-import { toast } from "react-toastify"
+import { useDeleteUserMutation,useUpdateUserByAdminMutation,  useBlockUserMutation,
+  useUnblockUserMutation, } from "../slices/adminAdminApiSlice"
+import { toast } from "react-toastify";
+
 
 function TableComponent({ users }) {
        //to handle search
       const [searchQuery, setSearchQuery] = useState('');
+      const [actualData, setActualData] = useState([]);
 
       //delete things
       const [deleteConfirmation,setDeleteConfirmation ]=useState(false)
@@ -77,6 +80,107 @@ function TableComponent({ users }) {
   };
 
 
+
+  //ss
+  const [blockUser] = useBlockUserMutation();
+  const [unblockUser] = useUnblockUserMutation();
+  const [refresher, setRefresher] = useState("");
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/admin/users");
+      setActualData(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      toast.error("Error fetching user data");
+    }
+  };
+
+
+  useEffect(() => {
+    // Fetch user data from the backend
+    fetchUserData();
+  }, [refresher]);
+
+
+  const handleBlockUser = async (userId) => {
+    const confirmBlock = window.confirm(
+      "are you sure you want to block this user?"
+    );
+    if (confirmBlock) {
+      try {
+        await blockUser({ userId });
+
+        toast.success("user blocked");
+
+        setRefresher("blocked");
+      } catch (err) {
+        console.error("Error blocking user:", err);
+        // Show an error toast
+        toast.error("An error occurred while blocking the user.");
+      }
+    }
+  };
+
+
+  
+  const handleUnBlockUser = async (userId) => {
+    const confirmUnblock = window.confirm(
+      "Are you sure you want to unblock this user?"
+    );
+    if (confirmUnblock) {
+      try {
+        await unblockUser({ userId });
+        toast.success("User unblocked successfully");
+        // Refetch user data and update state after unblocking
+        setRefresher("unblocked");
+      } catch (err) {
+        console.error("Error unblocking user:", err);
+        // Show an error toast
+        toast.error("An error occurred while unblocking the user.");
+      }
+    }
+  };
+
+
+  // const [isBlock] = useBlockUserMutation();  
+
+
+  // const [blockUser,setBlockUser ]=useState(false)
+  //     const [userIdToBlock, setUserIdToBlock] = useState(null);  // Track the user ID to delete
+
+  // const handleBlockuser = async () =>{
+  //     try{
+  //         const responseFromApiCall = await isBlock( {userId : userIdToBlock});
+  //         toast.success("User Blocked Successfully");
+  //         setUserIdToBlock(null)
+  //         setBlockUser(false)
+  //         window.location.reload();
+  //     }catch(err){
+  //       toast.error(err?.data?.message || err?.error)
+  //       // toast.success("User Blocked Successfully");
+  //     }
+  // }
+  // //unblock user
+
+  // const [isUnblock] =useUnblockUserMutation();
+
+  // const [unBlockUser,setUnBlockUser]= useState(false);
+  // const [userIdToUnBlockUser,setUserIdToUnBlockUser] = useState(null);
+  
+  //  const handleUnBlockuser = async()=>{
+  //   try{
+  //     const responseFromApiCall = await isUnblock( {userId :userIdToUnBlockUser } );
+  //     toast.success("user Unblocked Sucessfully");
+  //     setUserIdToUnBlockUser(null);
+  //     setUnBlockUser(false)
+  //     window.location.reload();
+  //   }catch(err){
+  //     toast.error(err?.data?.message || err?.error)
+  //   }
+  //  }
+
+
   return (
     <>
     <Form>
@@ -94,6 +198,7 @@ function TableComponent({ users }) {
         <th>EMAIL</th>
         <th>ACTION</th>
         <th>ACTION</th>
+        <th>ACTION</th>
       </tr>
     </thead>
     <tbody>
@@ -102,15 +207,7 @@ function TableComponent({ users }) {
           <td>{index + 1}</td>
           <td>{user.name}</td>
           <td>{user.email}</td>
-          <td>  <Button
-                type="button"
-                variant="primary"
-                className="mt-3"
-                onClick={() => handleOpenUpdateModal(user)}
-
-              >
-                Update
-              </Button></td>
+          
           <td><Button
                 type="button"
                 variant="danger"
@@ -123,6 +220,93 @@ function TableComponent({ users }) {
               >
                 Delete
               </Button></td>
+              <td>  <Button
+                type="button"
+                variant="primary"
+                className="mt-3"
+                onClick={() => handleOpenUpdateModal(user)}
+               
+              >
+                Update
+              </Button></td>
+
+              <td className="py-2 px-4 text-center">
+                  {user.isBlocked ? (
+                    <Button
+                      
+                      type='button'  
+                      className="mt-3"
+                      variant='danger'
+                      onClick={() => handleUnBlockUser(user._id)}         >
+                      Unblock
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleBlockUser(user._id)}
+                      className="mt-3"
+                      variant='danger'
+                      type='button'
+                    >
+                      Block
+                    </Button>
+                  )}
+                </td>
+
+
+              {/* <td className="border px-4 py-2">
+                {user.isBlocked ? (
+                  <Button className="mt-3" 
+                  type="button"
+                  variant="danger" 
+                  onClick={()=>{
+                    setUserIdToUnBlockUser(user_id);
+                    setUnBlockUser(true)
+                  }}
+                  >
+                    UnBlock
+                  </Button>
+                ) : (
+                  <Button className="mt-3" type="button"
+                  variant="danger"   onClick={()=>{
+                    setUserIdToBlock(user._id); // Set the user ID to block
+                    setBlockUser(true); // Open the confirmation dialog
+                  }}>
+                    Block
+                  </Button>
+                )}
+              </td> */}
+               {/* <tbody>
+            {actualData.map((user, index) => (
+              <tr
+                key={user._id}
+                className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+              >
+                <td className="py-2 px-4 text-center">{user._id}</td>
+                <td className="py-2 px-4 text-center">{user.name}</td>
+                <td className="py-2 px-4 text-center">{user.email}</td>
+                <td className="py-2 px-4 text-center">
+                  {user.blocked ? (
+                    <button
+                      onClick={() => handleUnBlockUser(user._id)}
+                      className="mt-3"
+                      variant='danger'
+                      type='button'                    >
+                      Unblock
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleBlockUser(user._id)}
+                      className="mt-3"
+                      variant='danger'
+                      type='button'
+                    >
+                      Block
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody> */}
         </tr>
       ))}
     </tbody>
@@ -186,6 +370,39 @@ function TableComponent({ users }) {
           </Button>
         </Modal.Footer>
       </Modal>
+
+       {/* block confirmation*/}
+      {/* <Modal show={blockUser} onHide={() => setBlockUser(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Block</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to Block this user?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setBlockUser(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleBlockuser} disabled={isLoading}>
+            {isLoading ? "Blocking..." : "Block"}
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
+
+
+         {/* Unblock confirmation*/}
+         {/* <Modal show={unBlockUser} onHide={() => setUnBlockUser(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Un-Block</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to UnBlock this user?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setUnBlockUser(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleUnBlockuser} disabled={isLoading}>
+            {isLoading ? "UnBlocking..." : "UnBlock"}
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
 
 
   </>

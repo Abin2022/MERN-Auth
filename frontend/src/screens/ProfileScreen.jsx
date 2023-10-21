@@ -42,12 +42,12 @@ const ProfileScreen = () => {
         console.log(image);
         formData.append("userImage", image);
 
-        console.log(formData, "kkkk");
+       
         const res = await updateProfile(formData).unwrap("");
         dispatch(setCredentials({ ...res }));
         toast.success("Profile updated");
       } catch (err) {
-        console.log(err?.data?.message || err.error);
+        // console.log(err?.data?.message || err.error);
         toast.error(err?.data?.message || err.error);
       }
     }

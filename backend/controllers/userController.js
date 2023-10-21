@@ -11,6 +11,7 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      isBlocked: user.isBlocked
     });
   } else {
     res.status(400);
@@ -39,6 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      isBlocked: user.isBlocked
       // image:updatedUser.imagePath
     });
   } else {
@@ -90,12 +92,29 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("user not find");
   }
-  res.status(200).json({ message: " update user profile" });
+  
 });
+
+
+
+
+
+const getTutorList = asyncHandler(async (req, res) => {
+  const user = {
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    // profileImage: req.user.profileImage,
+  };
+  res.status(200).json(user);
+});
+
+
 export {
   authUser,
   registerUser,
   logOutUser,
   getUserProfile,
   updateUserProfile,
+  getTutorList,
 };

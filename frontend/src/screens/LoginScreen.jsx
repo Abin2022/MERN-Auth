@@ -54,7 +54,7 @@ const LoginScreen = () => {
           ></Form.Control>
         </Form.Group>
         <Form.Group className="my-2" controlId="password">
-          <Form.Label>password </Form.Label>
+          <Form.Label>Password </Form.Label>
           <Form.Control
             type="password"
             placeholder="Enter password"
@@ -68,7 +68,7 @@ const LoginScreen = () => {
         </Button>
         <Row className="py-3">
           <Col>
-            new here? <Link to="/register">Sign up</Link>
+            New here? <Link to="/register">Sign up</Link>
           </Col>
         </Row>
       </Form>
